@@ -94,6 +94,9 @@ INSTRUCCION
 	| error PTCOMA { 
         console.log('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); 
     }
+    | error LLAVEC { 
+        console.log('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); 
+    }
 ;
 
 BLOQUESENTENCIAS
