@@ -1,0 +1,12 @@
+imprimir ( "imprimir" );
+si ( 5 < 6 ) 
+{
+imprimir ( 5 );
+imprimir ( x );
+}
+;mientras ( a > 10 ) 
+{
+imprimir ( a );
+a = a + 1;
+}
+imprimir ( 'a' );
