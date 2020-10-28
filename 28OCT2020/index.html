@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+    <script src="traduccion.js"></script>
+
+    <h1>Servidor Jison</h1>
+
+    <form>
+        <label>Entrada:</label>
+        <textarea id="entrada" rows="10" cols="100">int i = 0;
+int x = 100;
+
+while(i < 100)
+{
+        String variableWhile = "Soy un while";
+        print( i + 1 );
+        print(variableWhile);
+        print("-----------------------");
+        i = i + 1;
+}
+print(variableWhile);</textarea>
+        <br><br>
+        <input type="primary" value="traduccion" onclick="traducir()">
+    </form>
+    <br><br>
+    <label>Salida:</label>
+    <textarea id="salida" rows="10" cols="100"></textarea>
+    </body>
+</html>
