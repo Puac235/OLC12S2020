@@ -8,6 +8,7 @@
 "//".*										// comentario simple línea
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]			// comentario multiple líneas
 
+"string"			return 'RSTRING';
 "int"			    return 'RINT';
 "double"			return 'RDOUBLE';
 "char"				return 'RCHAR';
@@ -71,6 +72,8 @@
     const Print                 = require('./Instrucciones/Print');
     const If                    = require('./Instrucciones/If');
     const While                 = require('./Instrucciones/While');
+
+    const Excepcion            = require('./Excepciones/Excepcion');
 %}
 
 /* Asociación de operadores y precedencia */
@@ -106,9 +109,11 @@ INSTRUCCION
     | DEFPRINT PTCOMA 			{ $$ = $1; }
 	| error PTCOMA { 
         console.log('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); 
+        $$ = new Excepcion.default(yytext, this._$.first_line, this._$.first_column);
     }
     | error LLAVEC { 
         console.log('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column); 
+        $$ = new Excepcion.default(yytext, this._$.first_line, this._$.first_column);
     }
 ;
 
@@ -125,6 +130,7 @@ TYPE
     | RDOUBLE 	{ $$ = 'decimal'; }
     | RBOOLEAN 	{ $$ = 'booleano'; }
     | RCHAR 	{ $$ = 'caracter'; }
+    | RSTRING 	{ $$ = 'cadena'; }
 ;
 
 DEFASIGNACION

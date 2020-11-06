@@ -11,6 +11,7 @@ import Declaracion from '../Jison/Instrucciones/Declaracion';
 import If from '../Jison/Instrucciones/If';
 import Print from '../Jison/Instrucciones/Print';
 import While from '../Jison/Instrucciones/While';
+import Excepcion from '../Jison/Excepciones/Excepcion'
 
 class gramaticacontroller{
 
@@ -20,8 +21,13 @@ class gramaticacontroller{
         try {
             let AST = parser.parse(entrada);
             var traduccion = '';
+            let errores = [];
             for(let instruccion of AST)
             {
+                if(instruccion instanceof Excepcion){
+                    errores.push({descripcion:`Error sintactico recuperado con ${instruccion.recuperado}`, linea:instruccion.linea, columna: instruccion.columna});
+                    continue
+                }
                 traduccion += instruccion.traducir();
             }
 
@@ -33,7 +39,8 @@ class gramaticacontroller{
             var instr = new nodoAST("INSTRUCCIONES");
             for(let instruccion of AST)
             {
-                    instr.agregarHijo2(instruccion.getNodo());
+                if(instruccion instanceof Excepcion) continue;
+                instr.agregarHijo2(instruccion.getNodo());
 
             }
 
@@ -55,7 +62,8 @@ class gramaticacontroller{
 
             res.send({
                 traduccion : traduccion,
-                arbol : grafo
+                arbol : grafo,
+                errores: errores
             });
         }
         catch(err){

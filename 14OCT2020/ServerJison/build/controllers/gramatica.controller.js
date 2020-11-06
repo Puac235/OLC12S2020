@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.gramaticaController = void 0;
 const nodoAST_1 = __importDefault(require("../Jison/Abstract/nodoAST"));
+const Excepcion_1 = __importDefault(require("../Jison/Excepciones/Excepcion"));
 class gramaticacontroller {
     ejecutar(req, res) {
         var parser = require('../Jison/gramatica');
@@ -12,7 +13,12 @@ class gramaticacontroller {
         try {
             let AST = parser.parse(entrada);
             var traduccion = '';
+            let errores = [];
             for (let instruccion of AST) {
+                if (instruccion instanceof Excepcion_1.default) {
+                    errores.push({ descripcion: `Error sintactico recuperado con ${instruccion.recuperado}`, linea: instruccion.linea, columna: instruccion.columna });
+                    continue;
+                }
                 traduccion += instruccion.traducir();
             }
             //GENERAR ARBOL
@@ -20,6 +26,8 @@ class gramaticacontroller {
             var init = new nodoAST_1.default("RAIZ");
             var instr = new nodoAST_1.default("INSTRUCCIONES");
             for (let instruccion of AST) {
+                if (instruccion instanceof Excepcion_1.default)
+                    continue;
                 instr.agregarHijo2(instruccion.getNodo());
             }
             init.agregarHijo2(instr); //AST
@@ -36,7 +44,8 @@ class gramaticacontroller {
             });
             res.send({
                 traduccion: traduccion,
-                arbol: grafo
+                arbol: grafo,
+                errores: errores
             });
         }
         catch (err) {

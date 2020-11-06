@@ -12,7 +12,8 @@ function traducir()
         {
             var data = JSON.parse(Http.responseText);
             document.getElementById('salida').innerHTML = data.traduccion;
-            console.log(data.arbol)
+            console.log(data.arbol);
+            console.log(data.errores);
         }
     }
 }

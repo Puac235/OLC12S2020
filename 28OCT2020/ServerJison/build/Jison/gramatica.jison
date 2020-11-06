@@ -111,7 +111,6 @@ INSTRUCCION
     | DEFWHILE					{ $$ = $1; }
     | DEFPRINT PTCOMA 			{ $$ = $1; }
 	| error PTCOMA { 
-        console.log(this); 
         $$ = new Excepcion.default('Sintactico', `Error recuperado con ${yytext}`, this._$.first_line, this._$.first_column);
     }
 ;
